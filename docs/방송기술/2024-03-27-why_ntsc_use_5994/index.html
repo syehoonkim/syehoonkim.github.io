@@ -1,0 +1,697 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="SBS 김세훈 블로그">
+      
+      
+        <meta name="author" content="Kim Syehoon">
+      
+      
+        <link rel="canonical" href="https://syehoonkim.github.io/%EB%B0%A9%EC%86%A1%EA%B8%B0%EC%88%A0/2024-03-27-why_ntsc_use_5994/">
+      
+      
+        <link rel="prev" href="../..">
+      
+      
+        <link rel="next" href="../../%EC%BB%B4%ED%93%A8%ED%84%B0/2024-03-26-mpv_with_luasocket/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.0.10">
+    
+    
+      
+        <title>왜 NTSC는 59.94 Hz의 필드 레이트를 사용했을까? - Kim Syehoon's blog</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../assets/stylesheets/modern/main.eafc6f7f.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/modern/palette.dfe2e883.min.css">
+      
+      
+  
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+  
+  <style>:root{}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,a=__md_scope)=>JSON.parse(t.getItem(a.pathname+"."+e)),__md_set=(e,t,a=localStorage,_=__md_scope)=>{try{a.setItem(_.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Kim Syehoon&#x27;s blog" class="md-header__button md-logo" aria-label="Kim Syehoon's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kim Syehoon's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              왜 NTSC는 59.94 Hz의 필드 레이트를 사용했을까?
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Kim Syehoon&#x27;s blog" class="md-nav__button md-logo" aria-label="Kim Syehoon's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+
+    </a>
+    Kim Syehoon's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    김세훈의 블로그
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    방송기술
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    방송기술
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    왜 NTSC는 59.94 Hz의 필드 레이트를 사용했을까?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    컴퓨터
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    컴퓨터
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%EC%BB%B4%ED%93%A8%ED%84%B0/2024-03-26-mpv_with_luasocket/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Luasocket을 mpv.io에서 사용하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    김세훈의 블로그
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    방송기술
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  <h1>왜 NTSC는 59.94 Hz의 필드 레이트를 사용했을까?</h1>
+
+<p>방송기술을 공부하다 보면 늘 부딪히던 문제가 왜 NTSC, 그리고 그 후손인 ATSC는 59.94 Hz라는 필드 레이트를 사용했냐 하는 것이다.<br />
+이에 대해서는 흔히 색상 부반송파 신호를 흑백 신호 위에 실어야 하는데, 그러다 보니 뭔가 문제가 생겨서 기존의 60 Hz를 1.001로 나누었다 정도의 설명은 흔히 접할 수 있다.<br />
+그러나 조금 더 정확히 조사해보고 싶었고, 그 결과를 기록한다.<br />
+우선, 미국의 전력 신호의 주파수가 60 Hz였기 때문에 필드 레이트도 60 Hz라면 전력 신호에 의한 간섭이 가만히 있게 되기 때문에 덜 거슬리게 보이므로 60 Hz를 선정했다고 한다.<br />
+그리고 비월주사 방식을 사용하므로, 프레임 레이트는 이의 절반인 30 Hz이다.<br />
+한편, 영상이 크게 바뀌거나 하지 않는다면 각 영상들의 주파수 성분은 프레임 레이트 30 Hz의 정수배 주변에 분포할 것이다. (주기성이 있는 신호이고, 기본 신호가 바로 프레임 레이트 주파수를 갖고 있을 테니까)<br />
+따라서, 저 영상이 크게 바뀌지 않는다는 가정이 거슬리긴 하지만, 30 Hz의 정수배 사이사이에는 주파수 스펙트럼이 들어갈 공간이 있는 것이다. 정확히는 30 Hz의 절반의 홀수 정수배들에 스펙트럼이 분포하면 될 것이다.<br />
+그리고, 각 선들마다 마찬가지로 변화가 적다고 가정한다면, 수평 신호들은 라인 레이트의 정수배 주변에 분포할 것이다. 물론 영상에 따라 그렇지 않을 수도 있다.
+그렇다면 라인 레이트는 얼마일까? NTSC에서는 한 프레임 당 525선이 있으므로, 라인 레이트는 30*525=15,750 Hz이다.<br />
+이제 부반송파 주파수를 검토해보자. 우선 프레임 레이트의 절반의 홀수 정수배 주파수가 되어야, 프레임 레이트의 배수 주파수들 중간에 들어갈 것이다.<br />
+한편, 부반송파로 인해서 화면에 어떤 패턴이 나타난다든가 하는 일이 있을 수 있는데, 이러한 패턴은 부반송파의 주파수를 라인 레이트의 절반의 홀수배로 설정하면 덜 보이게 된다. (이때, 한 프레임 내에는 홀수 개의 선들이 있기 때문에 라인 레이트의 절반의 홀수배는 프레임 레이트의 절반의 홀수배이기도 하다.)<br />
+왜 이렇게 하면 눈에 덜 띄냐면, 화면상의 한 선 위에 있는 어떤 점이 부반송파에 의해 밝아진다면, 바로 그 아래줄의 해당 위치에 있는 점은 180도의 위상차로 인해 어두워질 것이고, 우리의 시각은 이 두 점의 밝기를 평균내기 때문에 영향이 상쇄되기 때문이다.<br />
+이러한 효과는 각 프레임들에서도 성립하는데, 부반송파 주파수가 프레임 레이트의 절반의 홀수배이므로 한 프레임과 다음 프레임 간의 시간 사이에는 부반송파가 정수개+반개 들어가게 되고, 이로 인해서 프레임들에서 같은 위치에 있는 줄들의 밝기는 180도의 위상을 가지게 된다. 따라서 시각이 시간적으로도 평균을 내면 부반송파의 영향이 사라진다.<br />
+그리고 부반송파 주파수는 최대한 높아야 밝기 신호와의 간섭이 줄어들지만, 동시에 색차 신호의 상측파대가 비디오 주파수 대역에 들어올 수 있을 정도로 낮아야 한다. 관련 문헌에 따르면 색차 신호는 부반송파 신호로부터 0.6 MHz 범위에 들어가야 한다고 한다. 그리고 비디오 밴드가 4.2 MHz 정도라고 하므로, 부반송파 주파수는 3.6 MHz정도가 되어야 할 것이다. 라인 레이트가 15,750 Hz였으므로, 3.6 MHz를 라인 레이트의 절반인 7,875 Hz로 나눠보면 약 457이란 값이 나온다. 텔레비전 시스템 내의 주파수 분할기를 설계하기 쉽게 하기 위해서 457에 가까우면서 13, 7, 5의 약수를 갖는 455를 선정한다면 부반송파 주파수는 3.583125 Hz가 된다.<br />
+오디오 신호를 고려하지 않는다면 여기서 끝이지만, 오디오 신호와 부반송파 신호 간의 영향을 고려해야 한다. 두 신호가 상호 변조되면 둘의 주파수 차이에 해당하는 맥놀이 주파수를 갖는 신호가 발생되는데, 이 신호 또한 화면에 패턴으로 나타나게 된다.<br />
+마찬가지로 이 패턴들이 라인 레이트의 절반의 홀수배라면 덜 보이게 되므로 그렇게 해야 하는데, 이는 오디오 신호와 비디오 반송파 신호가 라인 레이트의 정수배가 되어야 함을 의미한다. 왜냐면 색상 부반송파 신호가 라인 레이트의 절반의 홀수배이기 때문에, 다시 이로부터 라인 레이트의 절반의 홀수배만큼 떨어진 것은 라인 레이트의 정수배이기 때문이다.<br />
+라인 레이트 15,750 kHz의 정수배 중, 285번째 주파수는 15750 * 285 = 4.48875 MHz이고 286번째 주파수는 4.5045 MHz가 있다. 여기서 286번째 주파수인 4.5045 MHz가 기존 오디오 주파수인 4.5 MHz에 더 가깝다. 그리고 그 차이가 0.001배임을 주목하라.<br />
+그러나, 기존 흑백 수상기들이 4.5 MHz를 쓰고 있는 상황에서 주파수를 4.5 kHz 더 옮기는 것은 어려운 일이므로, 대신 비디오 주파수를 1.001로 나누는 편을 선택하였다. 그에 따른 결과를 생각해보면, 4.5 MHz가 라인 레이트의 286번째 고조파이므로, 라인 레이트는 4.5 MHz / 286 = 15,734.265734... Hz가 된다. 그리고 한 필드 당 525/2라인이 있으므로 필드 레이트는 이 라인 레이트를 525/2로 나눈 값인 59.9400599400... Hz가 된다.</p>
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+      
+        <span class="md-tag">TV</span>
+      
+    
+      
+      
+      
+      
+        <span class="md-tag">NTSC</span>
+      
+    
+      
+      
+      
+      
+        <span class="md-tag">ATSC</span>
+      
+    
+  </nav>
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../.." class="md-footer__link md-footer__link--prev" aria-label="Previous: 김세훈의 블로그">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                김세훈의 블로그
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../%EC%BB%B4%ED%93%A8%ED%84%B0/2024-03-26-mpv_with_luasocket/" class="md-footer__link md-footer__link--next" aria-label="Next: Luasocket을 mpv.io에서 사용하기">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Luasocket을 mpv.io에서 사용하기
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Kim Syehoon. All rights reserved.
+
+    </div>
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      <script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["announce.dismiss","content.code.annotate","content.code.copy","content.code.select","content.footnote.tooltips","content.tabs.link","content.tooltips","navigation.footer","navigation.indexes","navigation.instant","navigation.instant.prefetch","navigation.path","navigation.sections","navigation.top","navigation.tracking","search.highlight"],"search":"../../assets/javascripts/workers/search.5df7522c.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.21aa498e.min.js"></script>
+      
+    
+  </body>
+</html>
