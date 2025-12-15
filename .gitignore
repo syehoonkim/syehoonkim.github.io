@@ -50,8 +50,7 @@ trace.json
 # Temporary files
 tmp
 
-
-!site
-site/**/*
+site/*
+!site/.gitkeep
 
 .cache
