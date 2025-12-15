@@ -13,7 +13,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: windows-latest # zensical PyPI wheel is Windows-only
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/configure-pages@v5
       - uses: actions/checkout@v5
@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: 3.12
       - run: pip install zensical
-      - run: zensical build --clean  -c zensical.toml
+      - run: zensical build --clean -f zensical.toml
       - uses: actions/upload-pages-artifact@v4
         with:
           path: site
