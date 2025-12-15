@@ -49,3 +49,7 @@ trace.json
 
 # Temporary files
 tmp
+
+site
+
+.cache

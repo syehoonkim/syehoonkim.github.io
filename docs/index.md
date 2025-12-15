@@ -7,4 +7,4 @@ tags: []
 
 # 김세훈의 블로그
 
-Zensical 기반 블로그
+김세훈 / SBS / <syehoon.kim@sbs.co.kr>
