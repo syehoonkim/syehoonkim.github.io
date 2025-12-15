@@ -50,8 +50,8 @@ trace.json
 # Temporary files
 tmp
 
-site
+
+!site
+site/**/*
 
 .cache
-
-!site/*
